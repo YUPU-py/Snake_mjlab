@@ -54,6 +54,16 @@ _build
 **/eval_output/*
 **/figures/
 
+# Local training outputs (ignore by pattern)
+**/model_*.pt
+**/exported/
+**/checkpoint/
+**/videos/
+**/videos*/
+
+# Training logs and tensorboard events
+2026-*/
+
 # Pre-Trained Checkpoints
 /.pretrained_checkpoints/
 

@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+
+<mujoco model="14DOF-NW">
+  <compiler angle="radian" coordinate="local" meshdir="meshes/" />
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  
+  <asset>
+    <texture type="skybox" builtin="flat" rgb1="1 1 1" rgb2=".9 .9 .9" width="128" height="128" />
+    <texture name="floortex" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9" 
+      width="512" height="512" mark="cross" markrgb=".8 .8 .8" />
+    
+    <!-- 定义材料，引用floortex纹理 -->
+    <material name="floortex" texture="floortex" texuniform="true" reflectance="0.3" texrepeat="1 1"/>
+   
+    <mesh name="base_link" file="base_link.STL" />
+    <mesh name="link1" file="link1.STL" />
+    <mesh name="link2" file="link2.STL" />
+    <mesh name="link3" file="link3.STL" />
+    <mesh name="link4" file="link4.STL" />
+    <mesh name="link5" file="link5.STL" />
+    <mesh name="link6" file="link6.STL" />
+    <mesh name="link7" file="link7.STL" />
+    <mesh name="link8" file="link8.STL" />
+    <mesh name="link9" file="link9.STL" />
+    <mesh name="link10" file="link10.STL" />
+    <mesh name="link11" file="link11.STL" />
+    <mesh name="link12" file="link12.STL" />
+    <mesh name="link13" file="link13.STL" />
+    <mesh name="link14" file="link14.STL" />
+    <material name="base_link_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link1_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link2_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link3_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link4_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link5_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link6_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link7_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link8_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link9_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link10_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link11_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link12_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link13_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+    <material name="link14_mat" rgba="0.95 0.91 0.86 1" specular="0" />
+  </asset>
+
+  <default>
+    <default class="sts3215">
+        <geom contype="0" conaffinity="0"/>
+        <joint damping="0.60" frictionloss="0.052" armature="0.028"/>
+        <position kp="17.8" kv="0.0" forcerange="-3.35 3.35"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <!-- 地板 -->
+    <geom name="floor" pos="0 0 0" size="10 10 .1" type="plane" material="floortex"
+               condim="3" friction="0.8 0.1 0.1" density="0"/>
+    <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -2 -1" diffuse=".5 .5 .5" specular=".5 .5 .5" />
+
+    <!-- 蛇头 -->
+    <body name="base_link" pos="0 0 0">
+      <freejoint name="root_free"/>
+      <inertial pos="-0.042451 -0.0001874 0.0174166" mass="0.1894535" fullinertia="0.0000697022 0.0002499936 0.0002906946 -0.0000000319 0.0000014988 -0.000000783"/>
+      <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="base_link_mat" type="mesh" mesh="base_link" />
+      <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="base_link" />
+      <body name="link1" pos="-0.1240009 -0.000016 0.0018299" quat="0.9999905 0.0043633 0 0">
+        <joint name="yaw1" type="hinge" axis="0 0 1" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+        <inertial pos="-0.0334175 0.0001431 0.0182064" mass="0.116231" fullinertia="0.000063965 0.0000582243 0.000073187 -0.0000000058 0.0000001038 -0.0000000003"/>
+        <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link1_mat" type="mesh" mesh="link1" />
+        <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link1" />
+        <body name="link2" pos="-0.07581 0.0183 0.01835" quat="0.7071001 0.7071001 0.0030853 0.0030853">
+          <joint name="pitch1" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+          <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+          <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link2_mat" type="mesh" mesh="link2" />
+          <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link2" />
+          <body name="link3" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+            <joint name="yaw2" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+            <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+            <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link3_mat" type="mesh" mesh="link3" />
+            <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link3" />
+            <body name="link4" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+              <joint name="pitch2" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+              <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+              <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link4_mat" type="mesh" mesh="link4" />
+              <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link4" />
+              <body name="link5" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+                <joint name="yaw3" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+                <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link5_mat" type="mesh" mesh="link5" />
+                <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link5" />
+                <body name="link6" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+                  <joint name="pitch3" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                  <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+                  <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link6_mat" type="mesh" mesh="link6" />
+                  <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link6" />
+                  <body name="link7" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+                    <joint name="yaw4" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                    <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+                    <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link7_mat" type="mesh" mesh="link7" />
+                    <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link7" />
+                    <body name="link8" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+                      <joint name="pitch4" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                      <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+                      <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link8_mat" type="mesh" mesh="link8" />
+                      <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link8" />
+                      <body name="link9" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+                        <joint name="yaw5" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                        <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+                        <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link9_mat" type="mesh" mesh="link9" />
+                        <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link9" />
+                        <body name="link10" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+                          <joint name="pitch5" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                          <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+                          <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link10_mat" type="mesh" mesh="link10" />
+                          <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link10" />
+                          <body name="link11" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+                            <joint name="yaw6" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                            <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+                            <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link11_mat" type="mesh" mesh="link11" />
+                            <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link11" />
+                            <body name="link12" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+                              <joint name="pitch6" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                              <inertial pos="-0.0335751 0.0001431 0.0179141" mass="0.116231" fullinertia="0.0000639639 0.0000582243 0.0000731881 -0.0000000058 0.0000000233 -0.0000000004"/>
+                              <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link12_mat" type="mesh" mesh="link12" />
+                              <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link12" />
+                              <body name="link13" pos="-0.0759672 -0.01835 0.0176877" quat="0.7040147 -0.7101583 -0.0000001 -0.0061973">
+                                <joint name="yaw7" type="hinge" axis="-0.0087259 -0.0087265 0.9999239" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                                <inertial pos="-0.0335751 -0.0000158 0.0179147" mass="0.116231" fullinertia="0.0000639639 0.0000582255 0.000073187 -0.0000000056 0.0000000233 -0.0000001309"/>
+                                <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link13_mat" type="mesh" mesh="link13" />
+                                <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link13" />
+                                <body name="link14" pos="-0.0759686 0.0181892 0.0178472" quat="0.7040147 0.7101583 0.0000001 0.0061973">
+                                  <joint name="pitch7" type="hinge" axis="-0.0087265 0 0.9999619" limited="true" range="-1.57 1.57" damping="0.6" frictionloss="0.052"/>
+                                  <inertial pos="-0.0623007 0.0017158 0.0179431" mass="0.3531785" fullinertia="0.000182442 0.000287824 0.0002803171 0.000000443 0.0000005757 -0.0000001048"/>
+                                  <geom pos="0 0 0" group="1" contype="0" conaffinity="0" material="link14_mat" type="mesh" mesh="link14" />
+                                  <geom pos="0 0 0" rgba="0.9373 0.2667 0.2667 1" group="3" contype="1" conaffinity="1" type="mesh" mesh="link14" />
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position class="sts3215" name="yaw1" joint="yaw1"/>
+    <position class="sts3215" name="pitch1" joint="pitch1"/>
+    <position class="sts3215" name="yaw2" joint="yaw2"/>
+    <position class="sts3215" name="pitch2" joint="pitch2"/>
+    <position class="sts3215" name="yaw3" joint="yaw3"/>
+    <position class="sts3215" name="pitch3" joint="pitch3"/>
+    <position class="sts3215" name="yaw4" joint="yaw4"/>
+    <position class="sts3215" name="pitch4" joint="pitch4"/>
+    <position class="sts3215" name="yaw5" joint="yaw5"/>
+    <position class="sts3215" name="pitch5" joint="pitch5"/>
+    <position class="sts3215" name="yaw6" joint="yaw6"/>
+    <position class="sts3215" name="pitch6" joint="pitch6"/>
+    <position class="sts3215" name="yaw7" joint="yaw7"/>
+    <position class="sts3215" name="pitch7" joint="pitch7"/>
+  </actuator>
+</mujoco>

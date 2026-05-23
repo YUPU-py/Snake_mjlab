@@ -1,0 +1,1802 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="14DOF-SW">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.041131 -0.00020391 0.018796"
+        rpy="0 0 0" />
+      <mass
+        value="0.2198141" />
+      <inertia
+        ixx="6.936E-05"
+        ixy="-3.3426E-08"
+        ixz="1.5311E-06"
+        iyy="0.0002227"
+        iyz="-7.7746E-07"
+        izz="0.00026277" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1">
+    <inertial>
+      <origin
+        xyz="-0.0333822482315665 0.00014081637185736 0.0178277925358364"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571531" />
+      <inertia
+        ixx="6.40681094231251E-05"
+        ixy="-6.34074683683308E-09"
+        ixz="1.03757208579469E-07"
+        iyy="5.82401586277675E-05"
+        iyz="-3.15717143179433E-10"
+        izz="7.31449623566064E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw1"
+    type="revolute">
+    <origin
+      xyz="-0.124000856480825 -1.59695599620056E-05 0.00182993031920744"
+      rpy="0.00872664625997146 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link2">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345092 0.00108254938833274 0.0179213702645511"
+        rpy="0 0 0" />
+      <mass
+        value="0.11256699286482" />
+      <inertia
+        ixx="6.3890145781799E-05"
+        ixy="2.31563413886279E-09"
+        ixz="4.64125397795881E-08"
+        iyy="5.53464105699204E-05"
+        iyz="-3.00987049690007E-10"
+        izz="7.05330140492594E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch1"
+    type="revolute">
+    <origin
+      xyz="-0.0758100000000003 0.0183 0.01835"
+      rpy="1.5707963267949 0 0.00872664625997157" />
+    <parent
+      link="link1" />
+    <child
+      link="link2" />
+    <axis
+      xyz="-0.00872653549837385 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link3">
+    <inertial>
+      <origin
+        xyz="-0.0335846194554987 -1.80475239656622E-05 0.0175359153388617"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571615" />
+      <inertia
+        ixx="6.40648703434192E-05"
+        ixy="1.04679308533956E-08"
+        ixz="2.46152220458596E-08"
+        iyy="5.82434172076032E-05"
+        iyz="-1.30279438282207E-07"
+        izz="7.31449428565486E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw2"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138902 -0.01835 0.0176877426320958"
+      rpy="-1.57944649123982 -0.00880246354041921 -0.00872631979186493" />
+    <parent
+      link="link2" />
+    <child
+      link="link3" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link4">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345153 0.00108254938834424 0.0179213702645713"
+        rpy="0 0 0" />
+      <mass
+        value="0.112566992864733" />
+      <inertia
+        ixx="6.38901457817698E-05"
+        ixy="2.31563414511769E-09"
+        ixz="4.64125397907772E-08"
+        iyy="5.53464105698888E-05"
+        iyz="-3.00987040422196E-10"
+        izz="7.05330140492467E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch2"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834661 0.0181891693618325 0.0178471950178592"
+      rpy="1.57944649121474 -0.00880213416012471 0.00872665203386414" />
+    <parent
+      link="link3" />
+    <child
+      link="link4" />
+    <axis
+      xyz="-0.00872653549837377 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link5">
+    <inertial>
+      <origin
+        xyz="-0.033536550975204 -1.47638544201766E-05 0.0175363634674192"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571527" />
+      <inertia
+        ixx="6.40669907985399E-05"
+        ixy="-6.1079654220593E-09"
+        ixz="2.44886370391291E-08"
+        iyy="5.82412991746913E-05"
+        iyz="-1.30436280913177E-07"
+        izz="7.3144940434266E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw3"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138904 -0.0183499999999985 0.0176877426321041"
+      rpy="-1.57944649123982 -0.00880246354041289 -0.00872631979187118" />
+    <parent
+      link="link4" />
+    <child
+      link="link5" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link6">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345092 0.00108254938833269 0.0179213702645538"
+        rpy="0 0 0" />
+      <mass
+        value="0.11256699286482" />
+      <inertia
+        ixx="6.3890145781799E-05"
+        ixy="2.31563413885806E-09"
+        ixz="4.64125397796093E-08"
+        iyy="5.53464105699205E-05"
+        iyz="-3.00987049687972E-10"
+        izz="7.05330140492594E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch3"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834659 0.0181891693618347 0.0178471950178522"
+      rpy="1.57944649121474 -0.0088021341601309 0.00872665203385783" />
+    <parent
+      link="link5" />
+    <child
+      link="link6" />
+    <axis
+      xyz="-0.00872653549837375 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link7">
+    <inertial>
+      <origin
+        xyz="-0.0335369472779679 -1.13247824094221E-05 0.0176103308962978"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571614" />
+      <inertia
+        ixx="6.40669891754724E-05"
+        ixy="-6.1087770383413E-09"
+        ixz="2.45816277128954E-08"
+        iyy="5.82412991747229E-05"
+        iyz="-1.30436288004798E-07"
+        izz="7.31449420573751E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw4"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138908 -0.018349999999979 0.0176877426321032"
+      rpy="-1.57944649123982 -0.00880246354040666 -0.00872631979187742" />
+    <parent
+      link="link6" />
+    <child
+      link="link7" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link8">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345096 0.00108254938833264 0.017921370264558"
+        rpy="0 0 0" />
+      <mass
+        value="0.112566992864821" />
+      <inertia
+        ixx="6.3890145781799E-05"
+        ixy="2.31563413886896E-09"
+        ixz="4.64125397796426E-08"
+        iyy="5.53464105699204E-05"
+        iyz="-3.00987049706141E-10"
+        izz="7.05330140492595E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link8.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link8.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch4"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834659 0.0181891693618474 0.0178471950178542"
+      rpy="1.57944649121474 -0.0088021341601369 0.00872665203385157" />
+    <parent
+      link="link7" />
+    <child
+      link="link8" />
+    <axis
+      xyz="-0.00872653549837375 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link9">
+    <inertial>
+      <origin
+        xyz="-0.0335365509751969 -1.47638544254077E-05 0.017536363467391"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571615" />
+      <inertia
+        ixx="6.40669907985692E-05"
+        ixy="-6.10796542818501E-09"
+        ixz="2.44886370277666E-08"
+        iyy="5.82412991747231E-05"
+        iyz="-1.30436280922272E-07"
+        izz="7.31449404342788E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link9.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link9.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw5"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138908 -0.0183499999999866 0.0176877426321096"
+      rpy="-1.57944649123982 -0.0088024635404005 -0.00872631979188347" />
+    <parent
+      link="link8" />
+    <child
+      link="link9" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link10">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345099 0.00108254938833248 0.0179213702645639"
+        rpy="0 0 0" />
+      <mass
+        value="0.112566992864821" />
+      <inertia
+        ixx="6.38901457817991E-05"
+        ixy="2.31563413888217E-09"
+        ixz="4.64125397796421E-08"
+        iyy="5.53464105699205E-05"
+        iyz="-3.00987049696121E-10"
+        izz="7.05330140492595E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link10.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link10.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch5"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834655 0.0181891693618478 0.0178471950178468"
+      rpy="1.57944649121474 -0.00880213416014251 0.00872665203384536" />
+    <parent
+      link="link9" />
+    <child
+      link="link10" />
+    <axis
+      xyz="-0.00872653549837375 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link11">
+    <inertial>
+      <origin
+        xyz="-0.0335365509751969 -1.47638544251608E-05 0.0175363634673847"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571615" />
+      <inertia
+        ixx="6.40669907985692E-05"
+        ixy="-6.10796542818898E-09"
+        ixz="2.44886370277717E-08"
+        iyy="5.82412991747231E-05"
+        iyz="-1.30436280922276E-07"
+        izz="7.31449404342788E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link11.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link11.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw6"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138911 -0.0183499999999787 0.017687742632118"
+      rpy="-1.57944649123982 -0.00880246354039429 -0.00872631979188913" />
+    <parent
+      link="link10" />
+    <child
+      link="link11" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link12">
+    <inertial>
+      <origin
+        xyz="-0.0324530738345096 0.00108254938833236 0.0179213702645711"
+        rpy="0 0 0" />
+      <mass
+        value="0.112566992864821" />
+      <inertia
+        ixx="6.3890145781799E-05"
+        ixy="2.31563413882817E-09"
+        ixz="4.64125397796999E-08"
+        iyy="5.53464105699205E-05"
+        iyz="-3.00987049705386E-10"
+        izz="7.05330140492595E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link12.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link12.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch6"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834653 0.0181891693618568 0.0178471950178375"
+      rpy="1.57944649121474 -0.00880213416014826 0.00872665203383909" />
+    <parent
+      link="link11" />
+    <child
+      link="link12" />
+    <axis
+      xyz="-0.00872653549837375 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link13">
+    <inertial>
+      <origin
+        xyz="-0.0335365509751968 -1.47638544259266E-05 0.0175363634673753"
+        rpy="0 0 0" />
+      <mass
+        value="0.116856588571615" />
+      <inertia
+        ixx="6.40669907985692E-05"
+        ixy="-6.10796542816165E-09"
+        ixz="2.44886370277376E-08"
+        iyy="5.82412991747231E-05"
+        iyz="-1.30436280922292E-07"
+        izz="7.31449404342787E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link13.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link13.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="yaw7"
+    type="revolute">
+    <origin
+      xyz="-0.0759672453138912 -0.018349999999969 0.0176877426321282"
+      rpy="-1.57944649123982 -0.0088024635403881 -0.00872631979189494" />
+    <parent
+      link="link12" />
+    <child
+      link="link13" />
+    <axis
+      xyz="-0.00872587097686309 -0.00872653549837375 0.99992385047757" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="link14">
+    <inertial>
+      <origin
+        xyz="-0.062233978740651 0.00203517741060935 0.0179466923644601"
+        rpy="0 0 0" />
+      <mass
+        value="0.348882243485429" />
+      <inertia
+        ixx="0.000182310308000311"
+        ixy="4.42534309330709E-07"
+        ixz="6.4294067992663E-07"
+        iyy="0.000279669495865647"
+        iyz="-1.04787977267988E-07"
+        izz="0.000272600953159253" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link14.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/link14.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pitch7"
+    type="revolute">
+    <origin
+      xyz="-0.0759686306834653 0.0181891693618669 0.017847195017868"
+      rpy="1.57944649121474 -0.00880213416011803 0.00872665203383316" />
+    <parent
+      link="link13" />
+    <child
+      link="link14" />
+    <axis
+      xyz="-0.00872653549837375 0 0.999961923064171" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1"
+      velocity="1" />
+    <dynamics
+      damping="0.6"
+      friction="0.052" />
+  </joint>
+  <link
+    name="w_link16">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902523E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="3.48566086460904E-22"
+        ixz="3.04189015288893E-24"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link16.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link16.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint16"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433506 -0.0509968511697919 0.0121155152902981"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link14" />
+    <child
+      link="w_link16" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link17">
+    <inertial>
+      <origin
+        xyz="2.22044604925031E-16 -0.00599977153838501 -5.23592129902176E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-3.83224302190232E-21"
+        ixz="-3.34434781941989E-23"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link17.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link17.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint17"
+    type="continuous">
+    <origin
+      xyz="-0.0972204969347639 -0.0509968511697485 0.0115020398447904"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link14" />
+    <child
+      link="w_link17" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link15">
+    <inertial>
+      <origin
+        xyz="2.22044604925031E-16 -0.00599977153838499 -5.23592129902384E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-4.80666637645864E-21"
+        ixz="-4.19471419816393E-23"
+        iyy="4.53661887242029E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.9235840635484E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link15.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link15.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint15"
+    type="continuous">
+    <origin
+      xyz="-0.0265300962998833 0.00638839389125454 -0.0329279432379867"
+      rpy="0 -0.00872631399289025 0" />
+    <parent
+      link="link13" />
+    <child
+      link="w_link15" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link14">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-3.83290474119514E-21"
+        ixz="-3.34492529309819E-23"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link14.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link14.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint14"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433535 -0.050996851169729 0.012115515290319"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link12" />
+    <child
+      link="w_link14" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link13">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-2.57264588273654E-23"
+        ixz="-2.24511404910812E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link13.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link13.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint13"
+    type="continuous">
+    <origin
+      xyz="-0.0265300962998797 0.00638839389128575 -0.0329279432380501"
+      rpy="0 -0.0087263139928903 0" />
+    <parent
+      link="link11" />
+    <child
+      link="w_link13" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link12">
+    <inertial>
+      <origin
+        xyz="1.11022302462516E-16 -0.00599977153838502 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-2.6007247705593E-21"
+        ixz="-2.26961812328221E-23"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link12.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link12.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint12"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433532 -0.0509968511697467 0.0121155152903139"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link10" />
+    <child
+      link="w_link12" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link11">
+    <inertial>
+      <origin
+        xyz="1.11022302462516E-16 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-2.57264588273654E-23"
+        ixz="-2.24511404910812E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link11.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link11.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint11"
+    type="continuous">
+    <origin
+      xyz="-0.0265300962998795 0.00638839389127724 -0.0329279432380505"
+      rpy="0 -0.00872631399289035 0" />
+    <parent
+      link="link9" />
+    <child
+      link="w_link11" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link10">
+    <inertial>
+      <origin
+        xyz="-2.22044604925031E-16 -0.00599977153837661 -5.23592129772626E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-1.77957668755461E-21"
+        ixz="-1.55301304758052E-23"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link10.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link10.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint10"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433514 -0.0509968511697867 0.0121155152903099"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link8" />
+    <child
+      link="w_link10" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link9">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902384E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-1.15035993194672E-24"
+        ixz="-6.17923185505247E-24"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link9.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link9.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint9"
+    type="continuous">
+    <origin
+      xyz="-0.0265434301675844 0.00636221428478216 -0.0299280596052194"
+      rpy="0 -0.00872631399289041 0" />
+    <parent
+      link="link7" />
+    <child
+      link="w_link9" />
+    <axis
+      xyz="0 0.999961923064171 0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link8">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838826 -5.23592129971079E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-8.99174058194296E-22"
+        ixz="-7.8469731267415E-24"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601667E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link8.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link8.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint8"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433516 -0.0509968511697729 0.0121155152902981"
+      rpy="-1.57952297305487 -0.00872664625997147 0" />
+    <parent
+      link="link6" />
+    <child
+      link="w_link8" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link7">
+    <inertial>
+      <origin
+        xyz="5.55111512312578E-17 -0.00599977153838777 -5.23592129932915E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-7.68070243246727E-22"
+        ixz="-6.70284746683014E-24"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601669E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint7"
+    type="continuous">
+    <origin
+      xyz="-0.0265300962998803 0.00638839389126619 -0.0329279432380439"
+      rpy="0 -0.00872631399289046 0" />
+    <parent
+      link="link5" />
+    <child
+      link="w_link7" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837387" />
+  </joint>
+  <link
+    name="w_link6">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-3.10202131700851E-23"
+        ixz="-2.70709299176485E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint6"
+    type="continuous">
+    <origin
+      xyz="-0.0269231737433503 -0.0509968511697846 0.0121155152902978"
+      rpy="-1.57952297305487 -0.00872664625997148 0" />
+    <parent
+      link="link4" />
+    <child
+      link="w_link6" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link5">
+    <inertial>
+      <origin
+        xyz="0.000811767328056545 -0.00594460616860247 -5.1877792101529E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.95299168958302E-07"
+        ixy="-2.16252951987988E-08"
+        ixz="-1.8872109213604E-10"
+        iyy="4.50709063998475E-07"
+        iyz="1.38201246796065E-09"
+        izz="2.92358181473074E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint5"
+    type="continuous">
+    <origin
+      xyz="-0.0293034556050267 0.00619904336677982 -0.0329537975563879"
+      rpy="0 -0.00872631399289052 0" />
+    <parent
+      link="link3" />
+    <child
+      link="w_link5" />
+    <axis
+      xyz="0.135294554676093 -0.990767694767079 -0.00864629868358695" />
+  </joint>
+  <link
+    name="w_link4">
+    <inertial>
+      <origin
+        xyz="-2.77555756156289E-17 -0.00599977153838503 -5.23592129902523E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-8.28312721212539E-23"
+        ixz="-7.22857560742529E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601663E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint4"
+    type="continuous">
+    <origin
+      xyz="-0.02692317374335 -0.0509968511697919 0.012115515290298"
+      rpy="-1.57952297305487 -0.00872664625997157 0" />
+    <parent
+      link="link2" />
+    <child
+      link="w_link4" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link3">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-3.10202131700851E-23"
+        ixz="-2.70709299176485E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint3"
+    type="continuous">
+    <origin
+      xyz="-0.0268164221171293 0.00610283496986031 -0.0327496861396522"
+      rpy="-0.00872664625997146 0 0" />
+    <parent
+      link="link1" />
+    <child
+      link="w_link3" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link1">
+    <inertial>
+      <origin
+        xyz="0 -0.00599977153838503 -5.23592129902453E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-1.6846899177034E-23"
+        ixz="-1.4702066180222E-25"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601666E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint1"
+    type="continuous">
+    <origin
+      xyz="-0.00225727859795422 0.00627002960385615 -0.0309161476959102"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="w_link1" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+  <link
+    name="w_link2">
+    <inertial>
+      <origin
+        xyz="1.38777878078145E-17 -0.00599977153838503 -5.23592129902523E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00551808701233817" />
+      <inertia
+        ixx="2.92346120832981E-07"
+        ixy="-1.45118621252899E-22"
+        ixz="-1.2664310216512E-24"
+        iyy="4.5366188724203E-07"
+        iyz="1.40778136601663E-09"
+        izz="2.92358406354841E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://14DOF-SW/meshes/w_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="w_joint2"
+    type="continuous">
+    <origin
+      xyz="-0.0722572785979542 0.00627002960385617 -0.0309161476959102"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="w_link2" />
+    <axis
+      xyz="0 -0.999961923064171 -0.00872653549837373" />
+  </joint>
+</robot>
