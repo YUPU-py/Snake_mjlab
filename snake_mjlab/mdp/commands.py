@@ -50,6 +50,17 @@ class SnakeVirtualChassisCommand(CommandTerm):
         self.metrics["error_vel_xy"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["error_vel_yaw"] = torch.zeros(self.num_envs, device=self.device)
 
+        # --- Debug metrics for virtual chassis analysis ---
+        # World frame velocity of base_link
+        self.metrics["debug_world_lin_vel_x"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_world_lin_vel_y"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_world_lin_vel_z"] = torch.zeros(self.num_envs, device=self.device)
+        # Virtual chassis heading angle (angle between VC x-axis and world x-axis)
+        self.metrics["debug_vc_heading_angle"] = torch.zeros(self.num_envs, device=self.device)
+        # Virtual chassis frame velocity
+        self.metrics["debug_vc_lin_vel_x"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_vc_lin_vel_y"] = torch.zeros(self.num_envs, device=self.device)
+
     @property
     def command(self) -> torch.Tensor:
         return self.vel_command_b
@@ -84,7 +95,7 @@ class SnakeVirtualChassisCommand(CommandTerm):
         return origin_w, axes_w, lin_vel_vc, ang_vel_z_vc
 
     def _update_metrics(self) -> None:
-        _, _, lin_vel_vc, ang_vel_z_vc = self._compute_virtual_state()
+        origin_w, axes_w, lin_vel_vc, ang_vel_z_vc = self._compute_virtual_state()
         max_command_time = self.cfg.resampling_time_range[1]
         max_command_step = max_command_time / self._env.step_dt
         self.metrics["error_vel_xy"] += torch.norm(
@@ -93,6 +104,22 @@ class SnakeVirtualChassisCommand(CommandTerm):
         self.metrics["error_vel_yaw"] += torch.abs(
             self.vel_command_b[:, 2] - ang_vel_z_vc
         ) / max_command_step
+
+        # --- Debug metrics for virtual chassis analysis ---
+        # World frame velocity of base_link
+        base_link_vel_w = self.robot.data.body_link_lin_vel_w[:, self._body_ids[0], :]
+        self.metrics["debug_world_lin_vel_x"] += base_link_vel_w[:, 0]
+        self.metrics["debug_world_lin_vel_y"] += base_link_vel_w[:, 1]
+        self.metrics["debug_world_lin_vel_z"] += base_link_vel_w[:, 2]
+
+        # Virtual chassis heading angle (angle between VC x-axis and world x-axis)
+        vc_x_axis = axes_w[:, :, 0]  # [N, 3]
+        heading_angle = torch.atan2(vc_x_axis[:, 1], vc_x_axis[:, 0])
+        self.metrics["debug_vc_heading_angle"] += heading_angle
+
+        # Virtual chassis frame velocity
+        self.metrics["debug_vc_lin_vel_x"] += lin_vel_vc[:, 0]
+        self.metrics["debug_vc_lin_vel_y"] += lin_vel_vc[:, 1]
 
     def _resample_command(self, env_ids: Sequence[int] | torch.Tensor) -> None:
         if isinstance(env_ids, torch.Tensor):

@@ -53,6 +53,4 @@ def is_terminated(env: "ManagerBasedRlEnv") -> torch.Tensor:
 
     This is used as a reward penalty for early termination.
     """
-    # Returns tensor of zeros (no termination signal from this term)
-    # The actual termination detection is handled by other termination terms
-    return torch.zeros(env.num_envs, dtype=torch.bool, device=env.device)
+    return env.reset_terminated.float()

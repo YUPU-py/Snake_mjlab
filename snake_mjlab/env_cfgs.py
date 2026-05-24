@@ -100,10 +100,10 @@ def snake_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             rel_heading_envs=1.0,
             planar_zero_threshold=0.0,
             ranges=SnakeVirtualChassisCommandCfg.Ranges(
-                lin_vel_x=(-0.1, 0.1),
-                lin_vel_y=(-0.1, 0.1),
-                ang_vel_z=(-0.0, 0.0),
-                heading=(-0.0, 0.0),
+                lin_vel_x=(-0.4, 0.4),  # 固定向前 0.1 m/s
+                lin_vel_y=(-0.2, 0.2),  
+                ang_vel_z=(0.0, 0.0),  
+                heading=(0.0, 0.0),
             ),
         )
     }
@@ -266,7 +266,7 @@ def snake_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             func=invalid_state,
             params={
                 "asset_cfg": SceneEntityCfg("robot"),
-                "max_root_lin_vel": 2.0,
+                "max_root_lin_vel": 5.0,
                 "max_root_ang_vel": 5.0,
                 "min_root_height": -0.2,
                 "max_root_height": 0.5,
@@ -288,37 +288,23 @@ def snake_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
                 "joint_position_range": (-0.05, 0.05),
                 "pose_range": {
                     "x": (-0.2, 0.2),
-                    "y": (0.0, 0.0),
-                    "yaw": (-3.14, 3.14),
+                    "y": (-0.2, 0.2),
+                    "yaw": (-0.0, 0.0),
                 },
                 "velocity_range": {
-                    "x": (-0.5, 0.5),
-                    "y": (-0.5, 0.5),
-                    "z": (-0.5, 0.5),
-                    "roll": (-0.5, 0.5),
-                    "pitch": (-0.5, 0.5),
-                    "yaw": (-0.5, 0.5),
+                    "x": (-0.0, 0.0),
+                    "y": (-0.0, 0.0),
+                    "z": (-0.0, 0.0),
+                    "roll": (-0.0, 0.0),
+                    "pitch": (-0.0, 0.0),
+                    "yaw": (-0.0, 0.0),
                 },
             },
         ),
     }
 
-    # --- Curriculum ---
-    cfg.curriculum = {
-        "command": CurriculumTermCfg(
-            func=command_velocity_curriculum,
-            params={
-                "command_name": "base_velocity",
-                "reward_term_name": "track_lin_vel_xy_exp",
-                "max_curriculum": 0.4,
-                "min_curriculum": 0.1,
-                "step_size": 0.05,
-                "threshold_ratio": 0.8,
-                "ema_decay": 0.05,
-                "min_env_count": 10,
-            },
-        )
-    }
+    # --- Curriculum: 清空所有 curriculum（来自 make_velocity_env_cfg 的 terrain_levels 也需要清除）---
+    cfg.curriculum = {}
 
     # --- Remove legged-robot metrics ---
     cfg.metrics = {}
