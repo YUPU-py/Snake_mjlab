@@ -1,8 +1,26 @@
-"""Snake velocity command — virtual chassis velocity tracking."""
+"""Snake velocity command — virtual chassis velocity tracking.
+
+This module defines the command term used by the `snake_mjlab` task package.
+It is required for task registration/import (`snake_mjlab/env_cfgs.py` imports
+`SnakeVirtualChassisCommandCfg`).
+
+The implementation is a lightweight mjlab-native adaptation of the legacy
+IsaacLab command logic used in `source/Snake_Residual/.../mdp/commands.py`.
+
+Key responsibilities:
+- Sample and update commanded planar velocity (and optional heading/yaw control)
+- Compute tracking error metrics (`error_vel_xy`, `error_vel_yaw`)
+- Provide debug metrics for world velocity and VC velocity/heading
+
+Note: Reward tracking has been switched to world-frame base_link tracking
+in `snake_mjlab/mdp/rewards.py`. VC remains useful for debugging and
+visualization.
+"""
 
 from __future__ import annotations
 
 from collections.abc import Sequence
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 import torch
@@ -22,7 +40,7 @@ if TYPE_CHECKING:
     from mjlab.envs import ManagerBasedRlEnv
 
 
-# Virtual chassis body names (matching 14DOF-DW.xml robot structure).
+# Virtual chassis body names (matching 14DOF robot structure).
 VIRTUAL_CHASSIS_BODY_NAMES = ("base_link",) + tuple(f"link{i}" for i in range(1, 15))
 
 
@@ -36,6 +54,7 @@ class SnakeVirtualChassisCommand(CommandTerm):
         self.robot: Entity = env.scene[cfg.entity_name]
         self._body_ids, _ = self.robot.find_bodies(list(cfg.body_names), preserve_order=True)
         self._body_ids = torch.tensor(self._body_ids, device=self.device, dtype=torch.long)
+
         self.prev_axes_w = torch.zeros(self.num_envs, 3, 3, device=self.device)
         self.has_prev_axes = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
 
@@ -47,19 +66,28 @@ class SnakeVirtualChassisCommand(CommandTerm):
         self.current_lin_vel_x_range = list(cfg.ranges.lin_vel_x)
         self.current_lin_vel_y_range = list(cfg.ranges.lin_vel_y)
 
+        # Tracking metrics (kept for logging; reward may use different terms).
         self.metrics["error_vel_xy"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["error_vel_yaw"] = torch.zeros(self.num_envs, device=self.device)
 
         # --- Debug metrics for virtual chassis analysis ---
-        # World frame velocity of base_link
+        # World frame velocity of base_link (instant + sum)
         self.metrics["debug_world_lin_vel_x"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["debug_world_lin_vel_y"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["debug_world_lin_vel_z"] = torch.zeros(self.num_envs, device=self.device)
-        # Virtual chassis heading angle (angle between VC x-axis and world x-axis)
+        self.metrics["debug_world_lin_vel_x_sum"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_world_lin_vel_y_sum"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_world_lin_vel_z_sum"] = torch.zeros(self.num_envs, device=self.device)
+
+        # Virtual chassis heading angle (instant + sum)
         self.metrics["debug_vc_heading_angle"] = torch.zeros(self.num_envs, device=self.device)
-        # Virtual chassis frame velocity
+        self.metrics["debug_vc_heading_angle_sum"] = torch.zeros(self.num_envs, device=self.device)
+
+        # Virtual chassis frame velocity (instant + sum)
         self.metrics["debug_vc_lin_vel_x"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["debug_vc_lin_vel_y"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_vc_lin_vel_x_sum"] = torch.zeros(self.num_envs, device=self.device)
+        self.metrics["debug_vc_lin_vel_y_sum"] = torch.zeros(self.num_envs, device=self.device)
 
     @property
     def command(self) -> torch.Tensor:
@@ -91,13 +119,14 @@ class SnakeVirtualChassisCommand(CommandTerm):
 
         self.prev_axes_w.copy_(axes_w)
         self.has_prev_axes[:] = True
-
         return origin_w, axes_w, lin_vel_vc, ang_vel_z_vc
 
     def _update_metrics(self) -> None:
-        origin_w, axes_w, lin_vel_vc, ang_vel_z_vc = self._compute_virtual_state()
+        _, axes_w, lin_vel_vc, ang_vel_z_vc = self._compute_virtual_state()
+
         max_command_time = self.cfg.resampling_time_range[1]
         max_command_step = max_command_time / self._env.step_dt
+
         self.metrics["error_vel_xy"] += torch.norm(
             self.vel_command_b[:, :2] - lin_vel_vc[:, :2], dim=-1
         ) / max_command_step
@@ -105,21 +134,24 @@ class SnakeVirtualChassisCommand(CommandTerm):
             self.vel_command_b[:, 2] - ang_vel_z_vc
         ) / max_command_step
 
-        # --- Debug metrics for virtual chassis analysis ---
-        # World frame velocity of base_link
+        # --- Debug metrics ---
         base_link_vel_w = self.robot.data.body_link_lin_vel_w[:, self._body_ids[0], :]
-        self.metrics["debug_world_lin_vel_x"] += base_link_vel_w[:, 0]
-        self.metrics["debug_world_lin_vel_y"] += base_link_vel_w[:, 1]
-        self.metrics["debug_world_lin_vel_z"] += base_link_vel_w[:, 2]
+        self.metrics["debug_world_lin_vel_x"] = base_link_vel_w[:, 0]
+        self.metrics["debug_world_lin_vel_y"] = base_link_vel_w[:, 1]
+        self.metrics["debug_world_lin_vel_z"] = base_link_vel_w[:, 2]
+        self.metrics["debug_world_lin_vel_x_sum"] += base_link_vel_w[:, 0]
+        self.metrics["debug_world_lin_vel_y_sum"] += base_link_vel_w[:, 1]
+        self.metrics["debug_world_lin_vel_z_sum"] += base_link_vel_w[:, 2]
 
-        # Virtual chassis heading angle (angle between VC x-axis and world x-axis)
-        vc_x_axis = axes_w[:, :, 0]  # [N, 3]
-        heading_angle = torch.atan2(vc_x_axis[:, 1], vc_x_axis[:, 0])
-        self.metrics["debug_vc_heading_angle"] += heading_angle
+        vc_x_axis = axes_w[:, :, 0]
+        heading_angle = wrap_to_pi(torch.atan2(vc_x_axis[:, 1], vc_x_axis[:, 0]))
+        self.metrics["debug_vc_heading_angle"] = heading_angle
+        self.metrics["debug_vc_heading_angle_sum"] += heading_angle
 
-        # Virtual chassis frame velocity
-        self.metrics["debug_vc_lin_vel_x"] += lin_vel_vc[:, 0]
-        self.metrics["debug_vc_lin_vel_y"] += lin_vel_vc[:, 1]
+        self.metrics["debug_vc_lin_vel_x"] = lin_vel_vc[:, 0]
+        self.metrics["debug_vc_lin_vel_y"] = lin_vel_vc[:, 1]
+        self.metrics["debug_vc_lin_vel_x_sum"] += lin_vel_vc[:, 0]
+        self.metrics["debug_vc_lin_vel_y_sum"] += lin_vel_vc[:, 1]
 
     def _resample_command(self, env_ids: Sequence[int] | torch.Tensor) -> None:
         if isinstance(env_ids, torch.Tensor):
@@ -129,8 +161,14 @@ class SnakeVirtualChassisCommand(CommandTerm):
         self.vel_command_b[env_ids, 1] = r.uniform_(*self.current_lin_vel_y_range)
         self.vel_command_b[env_ids, 2] = r.uniform_(*self.cfg.ranges.ang_vel_z)
 
+        if self.cfg.heading_command and self.cfg.ranges.heading is not None:
+            self.heading_target[env_ids] = r.uniform_(*self.cfg.ranges.heading)
+            self.is_heading_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_heading_envs
+
+        self.is_standing_env[env_ids] = r.uniform_(0.0, 1.0) <= self.cfg.rel_standing_envs
+
     def _update_command(self) -> None:
-        if self.cfg.heading_command:
+        if self.cfg.heading_command and self.cfg.ranges.heading is not None:
             _, axes_w, _, _ = self._compute_virtual_state()
             env_ids = self.is_heading_env.nonzero(as_tuple=False).flatten()
             if env_ids.numel() > 0:
@@ -142,8 +180,11 @@ class SnakeVirtualChassisCommand(CommandTerm):
                     min=self.cfg.ranges.ang_vel_z[0],
                     max=self.cfg.ranges.ang_vel_z[1],
                 )
+
         standing_env_ids = self.is_standing_env.nonzero(as_tuple=False).flatten()
-        self.vel_command_b[standing_env_ids, :] = 0.0
+        if standing_env_ids.numel() > 0:
+            self.vel_command_b[standing_env_ids, :] = 0.0
+
         small_planar = torch.norm(self.vel_command_b[:, :2], dim=1) <= self.cfg.planar_zero_threshold
         self.vel_command_b[small_planar, :2] = 0.0
 
@@ -178,9 +219,6 @@ class SnakeVirtualChassisCommand(CommandTerm):
         return extras
 
 
-from dataclasses import dataclass, field
-
-
 @dataclass(kw_only=True)
 class SnakeVirtualChassisCommandCfg(CommandTermCfg):
     entity_name: str
@@ -199,11 +237,13 @@ class SnakeVirtualChassisCommandCfg(CommandTermCfg):
         ang_vel_z: tuple[float, float]
         heading: tuple[float, float] | None = None
 
-    ranges: Ranges = field(default_factory=lambda: SnakeVirtualChassisCommandCfg.Ranges(
-        lin_vel_x=(-0.1, 0.1),
-        lin_vel_y=(-0.1, 0.1),
-        ang_vel_z=(0.0, 0.0),
-    ))
+    ranges: Ranges = field(
+        default_factory=lambda: SnakeVirtualChassisCommandCfg.Ranges(
+            lin_vel_x=(-0.1, 0.1),
+            lin_vel_y=(-0.1, 0.1),
+            ang_vel_z=(0.0, 0.0),
+        )
+    )
 
     def build(self, env: ManagerBasedRlEnv) -> SnakeVirtualChassisCommand:
         return SnakeVirtualChassisCommand(self, env)

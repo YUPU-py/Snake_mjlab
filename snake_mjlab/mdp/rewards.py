@@ -48,8 +48,36 @@ def phase_propagation(env: ManagerBasedRlEnv, asset_cfg: SceneEntityCfg = _DEFAU
     return -torch.mean(normalized_product, dim=1)
 
 
+def track_nominal_serpenoid_joint_targets_exp(
+    env: "ManagerBasedRlEnv",
+    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+    action_name: str = "joint_pos",
+    std: float = 0.25,
+) -> torch.Tensor:
+    """Track nominal joint targets produced by ResidualSerpenoidJointPositionAction.
+
+    This is the key imitation term: it rewards the robot for keeping its actual
+    joint positions close to the nominal serpenoid gait targets.
+
+    Note: we read the nominal targets from the action term to ensure exact match
+    with the internal gait generator (phase offsets, omega, amplitude, etc.).
+    """
+
+    asset: Entity = env.scene[asset_cfg.name]
+    q = asset.data.joint_pos[:, asset_cfg.joint_ids]
+
+    action_term = env.action_manager.get_term(action_name)
+    q_ref = action_term.nominal_joint_targets
+
+    # Ensure std is valid and stabilize gradients.
+    std_t = torch.clamp(torch.as_tensor(std, device=env.device, dtype=torch.float32), min=1e-4)
+    error = q - q_ref
+    l2 = torch.mean(torch.square(error), dim=1)
+    return torch.exp(-l2 / (std_t * std_t))
+
+
 class RawActionRatePenalty:
-    """L2 penalty on the first-order raw action-rate."""
+    """L2 penalty on the first-order raw action-rate (jerk)."""
 
     def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRlEnv):
         self._env = env
@@ -77,8 +105,64 @@ class RawActionRatePenalty:
             self._prev_raw_action[env_ids] = 0.0
 
 
+class RawActionAccPenalty:
+    """L2 penalty on the second-order raw action-rate (snap/acceleration of actions).
+
+    This penalizes changes in the action-rate, promoting smooth action transitions.
+    Used in residual RL to encourage stable residual corrections.
+    """
+
+    def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRlEnv):
+        self._env = env
+        self._action_term_name = cfg.params.get("action_term_name", "joint_pos")
+        self._acc_clip = float(cfg.params.get("acc_clip", 10.0))
+        self._prev_raw_action = None
+        self._prev_first_order = None
+
+    def __call__(
+        self,
+        env: ManagerBasedRlEnv,
+        action_term_name: str = "joint_pos",
+        acc_clip: float | None = None,
+    ) -> torch.Tensor:
+        action_term = env.action_manager.get_term(action_term_name)
+        raw_action = action_term.raw_actions
+
+        if self._prev_raw_action is None:
+            self._prev_raw_action = torch.zeros_like(raw_action)
+        if self._prev_first_order is None:
+            self._prev_first_order = torch.zeros_like(raw_action)
+
+        first_order = raw_action - self._prev_raw_action
+        second_order = first_order - self._prev_first_order
+
+        clip = self._acc_clip if acc_clip is None else float(acc_clip)
+        if clip > 0.0:
+            second_order = torch.clamp(second_order, min=-clip, max=clip)
+
+        self._prev_first_order.copy_(first_order)
+        self._prev_raw_action.copy_(raw_action)
+
+        return torch.sum(torch.square(second_order), dim=1)
+
+    def reset(self, env_ids: torch.Tensor | None = None) -> None:
+        if self._prev_raw_action is None:
+            return
+        if env_ids is None:
+            self._prev_raw_action.zero_()
+            self._prev_first_order.zero_()
+        else:
+            self._prev_raw_action[env_ids] = 0.0
+            self._prev_first_order[env_ids] = 0.0
+
+
 class VirtualChassisTrackLinVelXYExp:
-    """Reward planar command tracking in the virtual chassis frame."""
+    """Track planar command in the virtual chassis (VC) frame with exp reward.
+
+    This reverts the temporary world-frame tracking switch. It uses VC axes computed
+    from the configured body set, and tracks the commanded planar velocity against
+    the actual velocity expressed in VC frame.
+    """
 
     def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRlEnv):
         self._env = env
@@ -93,6 +177,7 @@ class VirtualChassisTrackLinVelXYExp:
         command_name: str,
         std: float,
         asset_cfg: SceneEntityCfg,
+        linear_coef: float = 0.0,
     ) -> torch.Tensor:
         body_pos_w = self._asset.data.body_link_pos_w[:, self._asset_cfg.body_ids, :]
         body_lin_vel_w = self._asset.data.body_link_lin_vel_w[:, self._asset_cfg.body_ids, :]
@@ -101,7 +186,7 @@ class VirtualChassisTrackLinVelXYExp:
         if not torch.isfinite(body_pos_w).all():
             return torch.zeros(env.num_envs, device=env.device)
 
-        _, axes_w, actual_lin_vel_vc, _ = compute_virtual_chassis_command_terms(
+        _, axes_w, lin_vel_vc, _ = compute_virtual_chassis_command_terms(
             body_pos_w=body_pos_w,
             body_lin_vel_w=body_lin_vel_w,
             body_ang_vel_w=body_ang_vel_w,
@@ -109,18 +194,18 @@ class VirtualChassisTrackLinVelXYExp:
             has_prev=self._has_prev_axes,
         )
 
-        if not torch.isfinite(axes_w).all() or not torch.isfinite(actual_lin_vel_vc).all():
-            return torch.zeros(env.num_envs, device=env.device)
-
         self._prev_axes_w.copy_(axes_w)
         self._has_prev_axes[:] = True
 
         command = env.command_manager.get_command(command_name)
-        lin_vel_error = torch.sum(
-            torch.square(command[:, :2] - actual_lin_vel_vc[:, :2]),
-            dim=1,
-        )
-        return torch.exp(-lin_vel_error / std**2)
+        lin_vel_error = torch.sum(torch.square(command[:, :2] - lin_vel_vc[:, :2]), dim=1)
+        exp_reward = torch.exp(-lin_vel_error / std**2)
+
+        if linear_coef > 0.0:
+            lin_penalty = linear_coef * torch.sqrt(lin_vel_error)
+            return exp_reward - lin_penalty
+
+        return exp_reward
 
     def reset(self, env_ids: torch.Tensor | None = None) -> None:
         if env_ids is None:
@@ -132,7 +217,12 @@ class VirtualChassisTrackLinVelXYExp:
 
 
 class VirtualChassisTrackAngVelZExp:
-    """Reward yaw-rate command tracking around the virtual chassis z-axis."""
+    """Track yaw-rate command in the virtual chassis (VC) frame with exp reward.
+
+    This reverts the temporary world-frame tracking switch. It uses VC axes computed
+    from the configured body set, and tracks the commanded yaw rate against the
+    actual angular velocity expressed in VC frame.
+    """
 
     def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRlEnv):
         self._env = env
@@ -155,7 +245,7 @@ class VirtualChassisTrackAngVelZExp:
         if not torch.isfinite(body_pos_w).all():
             return torch.zeros(env.num_envs, device=env.device)
 
-        _, axes_w, _, actual_ang_vel_z_vc = compute_virtual_chassis_command_terms(
+        _, axes_w, _, ang_vel_z_vc = compute_virtual_chassis_command_terms(
             body_pos_w=body_pos_w,
             body_lin_vel_w=body_lin_vel_w,
             body_ang_vel_w=body_ang_vel_w,
@@ -163,14 +253,11 @@ class VirtualChassisTrackAngVelZExp:
             has_prev=self._has_prev_axes,
         )
 
-        if not torch.isfinite(axes_w).all() or not torch.isfinite(actual_ang_vel_z_vc).all():
-            return torch.zeros(env.num_envs, device=env.device)
-
         self._prev_axes_w.copy_(axes_w)
         self._has_prev_axes[:] = True
 
         command = env.command_manager.get_command(command_name)
-        ang_vel_error = torch.square(command[:, 2] - actual_ang_vel_z_vc)
+        ang_vel_error = torch.square(command[:, 2] - ang_vel_z_vc)
         return torch.exp(-ang_vel_error / std**2)
 
     def reset(self, env_ids: torch.Tensor | None = None) -> None:

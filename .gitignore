@@ -15,6 +15,9 @@
 **/.pytest_cache/
 **/*.pyc
 **/*.pb
+**/.venv/
+Snake_Residual.egg-info/
+snake_mjlab.egg-info/
 
 # Docker/Singularity
 **/*.sif
@@ -78,3 +81,12 @@ tests/
 
 # Docker history
 .isaac-lab-docker-history
+
+# Local evaluation outputs
+sim2sim/eval_output_residual_80dim/
+
+# MuJoCo log files
+MUJOCO_LOG.TXT
+
+# UV lock file
+uv.lock

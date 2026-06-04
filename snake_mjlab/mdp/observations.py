@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 def last_raw_actions(env: "ManagerBasedRlEnv", action_name: str = "joint_pos") -> torch.Tensor:
     """Get raw ( unclipped ) actions from the action manager, with NaN sanitization."""
-    raw = env.action_manager.get_term(action_name)._raw_actions
+    raw = env.action_manager.get_term(action_name).raw_actions
     return torch.nan_to_num(raw, nan=0.0, posinf=0.0, neginf=0.0)
 
 
@@ -50,3 +50,38 @@ def joint_vel_rel(env: "ManagerBasedRlEnv", asset_cfg: SceneEntityCfg | None = N
 def generated_commands(env: "ManagerBasedRlEnv", command_name: str) -> torch.Tensor:
     """Current command values, with NaN sanitization."""
     return torch.nan_to_num(builtin_obs.generated_commands(env, command_name), nan=0.0, posinf=0.0, neginf=0.0)
+
+
+# ============================================================================
+# Residual-specific observation terms
+# ============================================================================
+
+
+def residual_gait_phase_sin(env: "ManagerBasedRlEnv", action_name: str = "joint_pos") -> torch.Tensor:
+    """Return sine of the current residual gait phase.
+
+    This is used by the residual policy to know the current phase of the
+    underlying serpenoid gait pattern.
+    """
+    action_term = env.action_manager.get_term(action_name)
+    return torch.sin(action_term.current_phase).unsqueeze(-1)
+
+
+def residual_gait_phase_cos(env: "ManagerBasedRlEnv", action_name: str = "joint_pos") -> torch.Tensor:
+    """Return cosine of the current residual gait phase.
+
+    This is used by the residual policy to know the current phase of the
+    underlying serpenoid gait pattern.
+    """
+    action_term = env.action_manager.get_term(action_name)
+    return torch.cos(action_term.current_phase).unsqueeze(-1)
+
+
+def nominal_serpenoid_joint_targets(env: "ManagerBasedRlEnv", action_name: str = "joint_pos") -> torch.Tensor:
+    """Return current nominal joint targets from the fixed serpenoid gait.
+
+    This provides the policy with information about what the nominal gait
+    targets are, so it can learn to adjust them appropriately.
+    """
+    action_term = env.action_manager.get_term(action_name)
+    return action_term.nominal_joint_targets

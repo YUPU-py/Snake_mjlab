@@ -1,17 +1,17 @@
 #!/bin/bash
 # mjlab Snake Training Launch Script
 
-# === WandB Configuration ===
-export WANDB_API_KEY="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"
-export WANDB_ENTITY="ypu900054-university-of-science-and-technology-beijing"
-export WANDB_PROJECT="mjlab"
+# === WandB Configuration (optional) ===
+# export WANDB_API_KEY="your-api-key"
+# export WANDB_ENTITY="your-entity"
+# export WANDB_PROJECT="mjlab"
 
 # === CUDA Configuration ===
-export LD_LIBRARY_PATH="/usr/local/cuda-12.6/lib64:/usr/lib/nvidia:$LD_LIBRARY_PATH"
+# export LD_LIBRARY_PATH="/usr/local/cuda-12.6/lib64:/usr/lib/nvidia:$LD_LIBRARY_PATH"
 
 # === Environment ===
-CONDA_ENV="snake"
-PROJECT_DIR="/home/admin01/workspace_pyx/Snake_Project-main"
+CONDA_ENV=${CONDA_ENV:-snake}
+PROJECT_DIR=${PROJECT_DIR:-$(dirname "$(dirname "$(realpath "$0")")")}
 
 # === Training Parameters (customize as needed) ===
 NUM_ENVS=${NUM_ENVS:-4096}
