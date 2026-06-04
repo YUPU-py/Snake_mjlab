@@ -1,0 +1,16 @@
+# snake_mjlab 依赖
+# 安装顺序: 先安装 torch，再安装 mjlab，最后安装本包
+
+# PyTorch (根据你的 CUDA 版本选择)
+# CUDA 12.6:
+torch>=2.4.0
+torchvision>=0.19.0
+# 或者使用 CPU 版本 (训练会很慢):
+# torch>=2.4.0 --index-url https://download.pytorch.org/whl/cpu
+# torchvision>=0.19.0 --index-url https://download.pytorch.org/whl/cpu
+
+# mjlab (包含 mujoco, warp-lang, rsl-rl-lib 等)
+mjlab>=1.1.0
+
+# snake_mjlab 本身
+-e .

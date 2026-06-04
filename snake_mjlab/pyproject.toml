@@ -5,7 +5,30 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "snake_mjlab"
 version = "0.1.0"
-dependencies = ["mjlab>=1.1.0"]
+description = "Snake robot velocity tracking with MuJoCo (mjlab) and PPO"
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+requires-python = ">=3.10"
+dependencies = [
+    "mjlab>=1.1.0",
+]
+
+[project.optional-dependencies]
+cuda126 = [
+    "torch>=2.4.0",
+    "torchvision>=0.19.0",
+    "--extra-index-url", "https://download.pytorch.org/whl/cu126",
+]
+cuda128 = [
+    "torch>=2.4.0",
+    "torchvision>=0.19.0",
+    "--extra-index-url", "https://download.pytorch.org/whl/cu128",
+]
+cpu = [
+    "torch>=2.4.0",
+    "torchvision>=0.19.0",
+    "--extra-index-url", "https://download.pytorch.org/whl/cpu",
+]
 
 [project.entry-points."mjlab.tasks"]
 snake_mjlab = "snake_mjlab"
