@@ -87,7 +87,7 @@ class RawActionRatePenalty:
 
     def __call__(self, env: ManagerBasedRlEnv, action_term_name: str = "joint_pos") -> torch.Tensor:
         action_term = env.action_manager.get_term(action_term_name)
-        raw_action = action_term.raw_actions
+        raw_action = action_term.raw_action
         if self._prev_raw_action is None:
             self._prev_raw_action = torch.zeros_like(raw_action)
         delta = raw_action - self._prev_raw_action
@@ -126,7 +126,7 @@ class RawActionAccPenalty:
         acc_clip: float | None = None,
     ) -> torch.Tensor:
         action_term = env.action_manager.get_term(action_term_name)
-        raw_action = action_term.raw_actions
+        raw_action = action_term.raw_action
 
         if self._prev_raw_action is None:
             self._prev_raw_action = torch.zeros_like(raw_action)

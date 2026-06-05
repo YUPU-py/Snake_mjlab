@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 def last_raw_actions(env: "ManagerBasedRlEnv", action_name: str = "joint_pos") -> torch.Tensor:
     """Get raw ( unclipped ) actions from the action manager, with NaN sanitization."""
-    raw = env.action_manager.get_term(action_name).raw_actions
+    raw = env.action_manager.get_term(action_name).raw_action
     return torch.nan_to_num(raw, nan=0.0, posinf=0.0, neginf=0.0)
 
 

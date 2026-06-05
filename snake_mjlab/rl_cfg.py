@@ -1,5 +1,7 @@
 """RL configuration for Snake velocity task."""
 
+from dataclasses import field
+
 from mjlab.rl import (
     RslRlModelCfg,
     RslRlOnPolicyRunnerCfg,
@@ -103,6 +105,7 @@ class SnakeVelocityFlatPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     - lr=1e-3, gamma=0.99, lam=0.95
     """
 
+    obs_groups: dict = field(default_factory=lambda: {"actor": ["policy"], "critic": ["policy"]})
     num_steps_per_env = 24
     max_iterations = 5000
     save_interval = 200

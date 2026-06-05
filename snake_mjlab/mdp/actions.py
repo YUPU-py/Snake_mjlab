@@ -88,6 +88,11 @@ class ResidualSerpenoidJointPositionAction(ActionTerm):
     def raw_actions(self) -> torch.Tensor:
         return self._raw_actions
 
+    # Alias: base class ActionTerm expects raw_action (singular)
+    @property
+    def raw_action(self) -> torch.Tensor:
+        return self._raw_actions
+
     @property
     def processed_actions(self) -> torch.Tensor:
         return self._final_joint_targets
@@ -193,6 +198,21 @@ class JointPositionAction(ActionTerm):
 
     def __init__(self, cfg: JointPositionActionCfg, env: "ManagerBasedRlEnv") -> None:
         super().__init__(cfg, env)
+        joint_names = cfg.actuator_names
+        if isinstance(joint_names, tuple) and len(joint_names) == 1:
+            joint_names = (joint_names[0],)
+        self._joint_ids, self._joint_names = self._entity.find_joints(
+            list(joint_names), preserve_order=cfg.preserve_order
+        )
+        self._joint_ids = list(self._joint_ids)
+        self._num_joints = len(self._joint_ids)
+        if self._num_joints == 0:
+            raise RuntimeError(
+                "No joints resolved for JointPositionAction. "
+                f"Check `actuator_names`={joint_names}. "
+                f"Available joints: {self._entity.joint_names}"
+            )
+        self._processed_actions = torch.zeros(self.num_envs, self._num_joints, device=self.device)
         self._scale = float(cfg.scale)
         self._offset = float(cfg.offset) if not cfg.use_default_offset else 0.0
         self._clip = self._resolve_clip(cfg.clip)
